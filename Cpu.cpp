@@ -77,7 +77,7 @@ void __cdecl SetFrameBuffer (DWORD Address, DWORD Length) {
 }
 #endif
 
-char *TimeName[MaxTimers] = { "CompareTimer","SiTimer","PiTimer","ViTimer" };
+char *TimeName[MaxTimers] = { (char*)"CompareTimer",(char*)"SiTimer",(char*)"PiTimer",(char*)"ViTimer" };
 
 void InitiliazeCPUFlags (void) {
 	inFullScreen = FALSE;
@@ -474,7 +474,7 @@ void DoSomething ( void ) {
 		if (CPU_Action.Pause) {
 			HMENU hMenu = GetMenu(hMainWindow);
 			HMENU hSubMenu = GetSubMenu(hMenu,1);
-			MenuSetText(hSubMenu, 1, GS(MENU_RESUME),"F2");
+			MenuSetText(hSubMenu, 1, GS(MENU_RESUME),(char*)"F2");
 
 			CurrentFrame = 0;
 			CurrentPercent = 0;
@@ -1070,7 +1070,7 @@ void PauseCpu (void) {
 		}
 		ResumeThread(hCPU);
 		SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_CPU_RESUMED));	
-		MenuSetText(hSubMenu, 1, GS(MENU_PAUSE),"F2");
+		MenuSetText(hSubMenu, 1, GS(MENU_PAUSE),(char*)"F2");
 		ManualPaused = FALSE;
 		CPU_Paused = FALSE;
 	} else {
@@ -1086,7 +1086,7 @@ void RefreshScreen (void ){
 	char Label[100];
 
 	if (Profiling || ShowCPUPer) { memcpy(Label,ProfilingLabel,sizeof(Label)); }
-	if (Profiling) { StartTimer("RefreshScreen"); }
+	if (Profiling) { StartTimer((char*)"RefreshScreen"); }
 
 	if (OLD_VI_V_SYNC_REG != VI_V_SYNC_REG) {
 		if (VI_V_SYNC_REG == 0) {
@@ -1110,10 +1110,10 @@ void RefreshScreen (void ){
 		ViFieldNumber = 0;
 	}
 	
-	if (ShowCPUPer || Profiling) { StartTimer("CPU Idel"); }
+	if (ShowCPUPer || Profiling) { StartTimer((char*)"CPU Idel"); }
 	if (LimitFPS) {	Timer_Process(NULL); }
 	if (ShowCPUPer || Profiling) { StopTimer(); }
-	if (Profiling) { StartTimer("RefreshScreen: Update FPS"); }
+	if (Profiling) { StartTimer((char*)"RefreshScreen: Update FPS"); }
 	if ((CurrentFrame & 7) == 0) {
 		//Disables Screen saver
 		//mouse_event(MOUSEEVENTF_MOVE,1,1,0,GetMessageExtraInfo());
@@ -1128,14 +1128,14 @@ void RefreshScreen (void ){
 	if (ShowCPUPer) { DisplayCPUPer(); }
 	CurrentFrame += 1;
 
-	if (Profiling) { StartTimer("RefreshScreen: Update Screen"); }
+	if (Profiling) { StartTimer((char*)"RefreshScreen: Update Screen"); }
 	__try {
 		if (UpdateScreen != NULL) { UpdateScreen(); }
 	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
 		DisplayError("Unknown memory action in trying to update the screen\n\nEmulation stop");
 		ExitThread(0);
 	}
-	if (Profiling) { StartTimer("RefreshScreen: Cheats"); }
+	if (Profiling) { StartTimer((char*)"RefreshScreen: Cheats"); }
 	if ((STATUS_REGISTER & STATUS_IE) != 0 ) { ApplyCheats(); }
 	if (Profiling || ShowCPUPer) { StartTimer(Label); }
 }
@@ -1177,12 +1177,12 @@ void RunRsp (void) {
 				strncpy(Label,ProfilingLabel,sizeof(Label));
 
 				if (IndvidualBlock && !DisplayCPUPer) {
-					StartTimer("RSP");
+					StartTimer((char*)"RSP");
 				} else {
 					switch (*( DWORD *)(DMEM + 0xFC0)) {
-					case 1:  StartTimer("RSP: Dlist"); break;
-					case 2:  StartTimer("RSP: Alist"); break;
-					default: StartTimer("RSP: Unknown"); break;
+					case 1:  StartTimer((char*)"RSP: Dlist"); break;
+					case 2:  StartTimer((char*)"RSP: Alist"); break;
+					default: StartTimer((char*)"RSP: Unknown"); break;
 					}
 				}
 				DoRspCycles(100);
@@ -1218,7 +1218,7 @@ void StartEmulation ( void ) {
 	WrittenToRom = FALSE;
 
 	InitilizeTLB();
-	InitalizeR4300iRegisters(LoadPifRom(*(ROM + 0x3D)),*(ROM + 0x3D),GetCicChipID(ROM));
+	InitalizeR4300iRegisters(LoadPifRom(*(ROM + 0x3D)),*(ROM + 0x3D),GetCicChipID((char*)ROM));
 
 	BuildInterpreter();
 
@@ -1271,7 +1271,7 @@ void TimerDone (void) {
 	char Label[100];
 	if (Profiling) { 
 		strncpy(Label, ProfilingLabel, sizeof(Label));
-		StartTimer("TimerDone"); 
+		StartTimer((char*)"TimerDone");
 	}
 
 	switch (Timers.CurrentTimerType) {

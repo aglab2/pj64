@@ -23,6 +23,9 @@
  * should be forwarded to them so if they want them.
  *
  */
+
+typedef unsigned __int64 QWORD;
+
 #define MaxCodeBlocks			50000
 #define MaxOrigMem				65000
 
@@ -209,7 +212,7 @@ struct {
 
 BYTE *Compiler4300iBlock    ( void );
 BYTE *CompileDelaySlot      ( void );
-void CompileExit            ( DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNow, void (*x86Jmp)(char * Label, DWORD Value));
+void CompileExit            ( DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNow, void (*x86Jmp)(const char * Label, DWORD Value));
 void CompileSystemCheck     ( DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet );
 void FixRandomReg           ( void );
 void FreeSection            ( BLOCK_SECTION * Section, BLOCK_SECTION * Parent);

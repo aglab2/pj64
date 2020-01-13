@@ -32,7 +32,7 @@
 #include "main.h"
 
 #ifdef WIN32
-char * LineFeed = "\r\n";
+char * LineFeed = (char*) "\r\n";
 #else
 char * LineFeed = "\n";
 #endif
@@ -78,7 +78,7 @@ int fGetString2(FILE * File, char **String, BYTE **Data, int * DataSize, int *Le
 
 	if (*DataSize == 0) { 
 		*DataSize = BufferIncrease;
-		*Data = malloc(*DataSize);
+		*Data = (BYTE*) malloc(*DataSize);
 		*Left = 0;
 	}
 
@@ -91,8 +91,8 @@ int fGetString2(FILE * File, char **String, BYTE **Data, int * DataSize, int *Le
 					free(*String); 
 					*String = NULL;
 				}
-				*String = malloc(count + 1);
-				strncpy(*String,*Data,count);
+				*String = (char*) malloc(count + 1);
+				strncpy(*String, (char*)*Data,count);
 				(*String)[count] = 0;
 				*Left -= count + 1;
 				if (*Left > 0) {
@@ -137,7 +137,7 @@ void fInsertSpaces(FILE * File,int Pos, int NoOfSpaces) {
 				fseek(File,WritePos,SEEK_SET);
 				end = WritePos;
 				fprintf(File,"%*c",NoOfSpaces,' ');
-				result = strlen(Data);
+				result = strlen((char*)Data);
 				fwrite(Data,result,1,File);
 				fseek(File,WritePos,SEEK_SET);						
 			}
@@ -178,7 +178,7 @@ unsigned int _GetPrivateProfileInt(
 	
 	//test to see if Fpos is same as current section;
 	fseek(fInput,Fpos,SEEK_SET);
-	result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+	result = fGetString2(fInput,&Input, (BYTE**)&Data,&DataLen,&DataLeft);
 	if (result > 1) {
 		Pos = Input;
 		while (Pos != NULL) {
@@ -212,7 +212,7 @@ unsigned int _GetPrivateProfileInt(
 		if (strcmp(lpAppName,CurrentSection) != 0) { 
 			Fpos = ftell(fInput) - DataLeft;
 		}
-		result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+		result = fGetString2(fInput,&Input, (BYTE**)&Data,&DataLen,&DataLeft);
 		if (result <= 1) { continue; }
 		
 		Pos = Input;
@@ -278,7 +278,7 @@ unsigned int _GetPrivateProfileString(
 	
 	//test to see if Fpos is same as current section;
 	fseek(fInput,Fpos,SEEK_SET);
-	result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+	result = fGetString2(fInput,&Input, (BYTE**)&Data,&DataLen,&DataLeft);
 	if (result > 1) {
 		Pos = Input;
 		while (Pos != NULL) {
@@ -312,7 +312,7 @@ unsigned int _GetPrivateProfileString(
 		if (strcmp(lpAppName,CurrentSection) != 0) { 
 			Fpos = ftell(fInput) - DataLeft;
 		}
-		result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+		result = fGetString2(fInput,&Input, (BYTE**)&Data,&DataLen,&DataLeft);
 		if (result <= 1) { continue; }
 		
 		Pos = Input;
@@ -379,7 +379,7 @@ unsigned int _GetPrivateProfileString2(
 	
 	//test to see if Fpos is same as current section;
 	fseek(fInput,Fpos,SEEK_SET);
-	result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+	result = fGetString2(fInput,&Input, (BYTE**)&Data,&DataLen,&DataLeft);
 	if (result > 1) {
 		Pos = Input;
 		while (Pos != NULL) {
@@ -413,7 +413,7 @@ unsigned int _GetPrivateProfileString2(
 		if (strcmp(lpAppName,CurrentSection) != 0) { 
 			Fpos = ftell(fInput) - DataLeft;
 		}
-		result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+		result = fGetString2(fInput,&Input, (BYTE**)&Data,&DataLen,&DataLeft);
 		if (result <= 1) { continue; }
 		
 		Pos = Input;
@@ -445,7 +445,7 @@ unsigned int _GetPrivateProfileString2(
 		if (strcmp(Input,lpKeyName) != 0) { continue; }
 		len = strlen(&Pos[1]);
 		if (*lpReturnedString) { free(*lpReturnedString); }
-		*lpReturnedString = malloc(len + 1);
+		*lpReturnedString = (char*) malloc(len + 1);
 		strcpy(*lpReturnedString,&Pos[1]);
 		fclose(fInput);
 		if (Input) { free(Input);  Input = NULL; }
@@ -459,7 +459,7 @@ unsigned int _GetPrivateProfileString2(
 GetPrivateProfileString_ReturnDefault2:
 	len = strlen(lpDefault);
 	if (*lpReturnedString) { free(*lpReturnedString); }
-	*lpReturnedString = malloc(len + 1);
+	*lpReturnedString = (char*)malloc(len + 1);
 	strcpy(*lpReturnedString,lpDefault);
 	return len;
 	//return 0;
@@ -579,7 +579,7 @@ int _DeletePrivateProfileString(
 		if (strcmp(lpAppName,CurrentSection) != 0) { 
 			Fpos = ftell(fInput) - DataLeft;
 		}
-		result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+		result = fGetString2(fInput,&Input,(BYTE**)&Data,&DataLen,&DataLeft);
 		if (result <= 1) { continue; }
 		
 		Pos = Input;
@@ -692,7 +692,7 @@ int _WritePrivateProfileString(
 		if (strcmp(lpAppName,CurrentSection) != 0) { 
 			Fpos = ftell(fInput) - DataLeft;
 		}
-		result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+		result = fGetString2(fInput,&Input, (BYTE**)&Data,&DataLen,&DataLeft);
 		if (result <= 1) { continue; }
 		
 		Pos = Input;

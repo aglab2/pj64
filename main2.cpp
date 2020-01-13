@@ -67,7 +67,7 @@ LRESULT CALLBACK AboutBoxProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				CComPtr<IStream> pStream = NULL; 
 				if(CreateStreamOnHGlobal(hHTMLText, TRUE, &pStream) == ERROR_SUCCESS) 
 				{ 
-					CComQIPtr<IPersistStreamInit, &__uuidof(IPersistStreamInit)> pqiPersistStreamInit = pDispDocument; 
+					CComQIPtr<IPersistStreamInit, &__uuidof(IPersistStreamInit)> pqiPersistStreamInit = (CComQIPtr<IPersistStreamInit, &__uuidof(IPersistStreamInit)>) pDispDocument;
 					if(pqiPersistStreamInit.p != NULL)
 					{
 						if(pqiPersistStreamInit->InitNew() == ERROR_SUCCESS)

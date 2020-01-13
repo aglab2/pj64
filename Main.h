@@ -145,24 +145,24 @@ extern HINSTANCE hInst;
 /******** Function Prototype *********/
 DWORD AsciiToHex          ( char * HexValue );
 void AlwaysOnTopWindow    ( HWND hWnd );
-void  __cdecl DisplayError       ( char * Message, ... );
+void  __cdecl DisplayError       ( const char * Message, ... );
 void ChangeWinSize        ( HWND hWnd, long width, long height, HWND hStatusBar );
 void  DisplayFPS          ( void );
 char* GetExtIniFileName   ( void );
 char* GetIniFileName      ( void );
 char* GetLangFileName     ( void );
 char* GetNotesIniFileName ( void );
-int   GetStoredWinPos     ( char * WinName, DWORD * X, DWORD * Y );
-int   GetStoredWinSize    ( char * WinName, DWORD * Width, DWORD * Height );
+int   GetStoredWinPos     ( const char * WinName, DWORD * X, DWORD * Y );
+int   GetStoredWinSize    ( const char * WinName, DWORD * Width, DWORD * Height );
 void  LoadSettings        ( void );
 void  MenuSetText         ( HMENU hMenu, int MenuPos, char * Title, char * ShotCut );
-void  RegisterExtension   ( char * Extension, BOOL RegisterWithPj64 );
+void  RegisterExtension   ( const char * Extension, BOOL RegisterWithPj64 );
 void  SetCurrentSaveState ( HWND hWnd, int State);
 void  SetupMenu           ( HWND hWnd );
 //void  SetupMenuTitle      ( HMENU hMenu, int MenuPos, char * ShotCut, char * Title, char * Language, char *  LangFile );
 void  StoreCurrentWinPos  ( char * WinName, HWND hWnd );
 void  StoreCurrentWinSize ( char * WinName, HWND hWnd );
-BOOL  TestExtensionRegistered ( char * Extension );
+BOOL  TestExtensionRegistered ( const char * Extension );
 
 void AboutBox (void);
 

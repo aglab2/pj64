@@ -25,6 +25,8 @@
  */
 #define MaxGSEntries	100
 
+#include <minwindef.h>
+
 typedef struct {
 	DWORD Command;
 	WORD  Value;

@@ -33,7 +33,7 @@ typedef struct {
 			unsigned zero : 13;
 			unsigned Mask : 12;
 			unsigned zero2 : 7;
-		} ;
+		} v;
 		
 	} PageMask;
 	
@@ -46,7 +46,7 @@ typedef struct {
 			unsigned Zero : 4;
 			unsigned G : 1;
 			unsigned VPN2 : 19;
-		};
+		} v;
 		
 	} EntryHi;
 
@@ -61,7 +61,7 @@ typedef struct {
 			unsigned C : 3;
 			unsigned PFN : 20;
 			unsigned ZERO: 6;
-		} ;
+		} v;
 		
 	} EntryLo0;
 	
@@ -76,7 +76,7 @@ typedef struct {
 			unsigned C : 3;
 			unsigned PFN : 20;
 			unsigned ZERO: 6;
-		} ;
+		} v;
 		
 	} EntryLo1;
 } TLB;

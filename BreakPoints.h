@@ -26,6 +26,8 @@
 #ifndef __breakpoints_h 
 #define __breakpoints_h 
 
+#include <minwindef.h>
+
 void __cdecl Enter_BPoint_Window    ( void );
 int  Add_R4300iBPoint       ( DWORD Location, int Confirm );
 int  CheckForR4300iBPoint   ( DWORD Location );

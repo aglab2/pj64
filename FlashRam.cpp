@@ -42,7 +42,7 @@ BOOL LoadFlashram (void);
 DWORD FlashRAM_Offset, FlashFlag = FLASHRAM_MODE_NOPES;
 static HANDLE hFlashRamFile = NULL;
 BYTE * FlashRamPointer;
-QWORD FlashStatus = 0;
+__int64 FlashStatus = 0;
 
 void DmaFromFlashram(BYTE * dest, int StartOffset, int len) {
 	BYTE FlipBuffer[0x10000];

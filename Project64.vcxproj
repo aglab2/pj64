@@ -19,22 +19,26 @@
     </SccProjectName>
     <SccLocalPath>
     </SccLocalPath>
+    <ProjectGuid>{548B2FAE-4AFB-EA5E-C49A-7C60138E44E0}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -130,6 +134,8 @@
       <ObjectFileName>.\Release_External\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release_External\</ProgramDataBaseFileName>
       <CallingConvention>FastCall</CallingConvention>
+      <EnforceTypeConversionRules>false</EnforceTypeConversionRules>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -216,7 +222,7 @@
     </ClCompile>
     <ClCompile Include="Profiling.cpp" />
     <ClCompile Include="RomBrowser.cpp" />
-    <ClCompile Include="Settings Api.cpp" />
+    <ClCompile Include="SettingsApi.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SyncCPU.cpp" />
     <ClCompile Include="TLBDisplay.cpp" />
@@ -260,7 +266,7 @@
     <ClInclude Include="Profiling.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RomBrowser.h" />
-    <ClInclude Include="Settings Api.h" />
+    <ClInclude Include="SettingsApi.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="SyncCPU.h" />

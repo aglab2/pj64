@@ -522,7 +522,7 @@ BOOL LoadRomHeader ( void ) {
 		ReadFile(hFile,RomHeader,sizeof(RomHeader),&dwRead,NULL);		
 		CloseHandle( hFile ); 		
 	}
-	ByteSwapRom(RomHeader,sizeof(RomHeader));
+	ByteSwapRom((BYTE*) RomHeader,sizeof(RomHeader));
 	memcpy(&RomName[0],&RomHeader[0x20],20);
 	for( count = 0 ; count < 20; count += 4 ) {
 		RomName[count] ^= RomName[count+3];
@@ -592,7 +592,7 @@ void LoadRomOptions ( void ) {
 	if (CountPerOp < 1)  { CountPerOp = Default_CountPerOp; }
 	if (CountPerOp > 6)  { CountPerOp = Default_CountPerOp; }
 	
-	SaveUsing = RomSaveUsing;
+	SaveUsing = (SaveType) RomSaveUsing;
 	SelfModCheck = SystemSelfModCheck;
 	if (RomSelfMod != ModCode_Default) { SelfModCheck = RomSelfMod; }
 	UseTlb = RomUseTlb;
@@ -1053,7 +1053,7 @@ void SaveRecentDirs (void) {
 	char String[200];
 
 	sprintf(String,"Software\\N64 Emulation\\%s",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"",REG_OPTION_NON_VOLATILE, 
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD count;
@@ -1074,7 +1074,7 @@ void SaveRecentFiles (void) {
 	char String[200];
 
 	sprintf(String,"Software\\N64 Emulation\\%s",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"",REG_OPTION_NON_VOLATILE, 
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,(char*)"",REG_OPTION_NON_VOLATILE, 
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD count;
@@ -1165,7 +1165,7 @@ void SetRomDirectory ( char * Directory ) {
 	char Group[200];
 
 	sprintf(Group,"Software\\N64 Emulation\\%s",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, Group,0,"",REG_OPTION_NON_VOLATILE, 
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, Group,0, (char*)"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"Rom Directory",0,REG_SZ,(LPBYTE)Directory,strlen(Directory));

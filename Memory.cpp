@@ -31,7 +31,6 @@
 #include "plugin.h"
 #include "debugger.h"
 
-
 DWORD *TLB_ReadMap, *TLB_WriteMap, RdramSize, SystemRdramSize;
 BYTE *N64MEM, *RDRAM, *DMEM, *IMEM, *ROM;
 void ** JumpTable, ** DelaySlotTable;
@@ -76,7 +75,7 @@ int Allocate_Memory ( void ) {
 		return FALSE;
 	}
 
-	(BYTE *)JumpTable = (BYTE *) VirtualAlloc( NULL, 0x10000000, MEM_RESERVE | MEM_TOP_DOWN, PAGE_READWRITE );
+	JumpTable = (void**) VirtualAlloc( NULL, 0x10000000, MEM_RESERVE | MEM_TOP_DOWN, PAGE_READWRITE );
 	if( JumpTable == NULL ) {  
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 		return FALSE;
@@ -108,7 +107,7 @@ int Allocate_Memory ( void ) {
 	}
 	
 	/* Delay Slot Table */
-	(BYTE *)DelaySlotTable = (BYTE *) VirtualAlloc( NULL, (0x20000000 >> 0xA), MEM_RESERVE | MEM_TOP_DOWN, PAGE_READWRITE );
+	DelaySlotTable = (void**) VirtualAlloc( NULL, (0x20000000 >> 0xA), MEM_RESERVE | MEM_TOP_DOWN, PAGE_READWRITE );
 	if( DelaySlotTable == NULL ) {  
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 		return FALSE;
@@ -252,7 +251,7 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 			break; 
 		}
 		switch (Addr) {
-		case 0x04040010: MoveVariableToX86reg(&SP_STATUS_REG,"SP_STATUS_REG",Reg); break;
+		case 0x04040010: MoveVariableToX86reg(&SP_STATUS_REG, "SP_STATUS_REG",Reg); break;
 		case 0x04040014: MoveVariableToX86reg(&SP_DMA_FULL_REG,"SP_DMA_FULL_REG",Reg); break;
 		case 0x04040018: MoveVariableToX86reg(&SP_DMA_BUSY_REG,"SP_DMA_BUSY_REG",Reg); break;
 		case 0x04080000: MoveVariableToX86reg(&SP_PC_REG,"SP_PC_REG",Reg); break;
@@ -1053,10 +1052,10 @@ int r4300i_Command_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	}
 	exRec = *lpEP->ExceptionRecord;
 
-    if ((int)((char *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) < 0) {
+    if ((int)((BYTE*)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) < 0) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
-    if ((int)((char *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) > 0x1FFFFFFF) {
+    if ((int)((BYTE *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) > 0x1FFFFFFF) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 
@@ -1241,7 +1240,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	case 0x0F:
 		switch(*(TypePos + 1)) {
 		case 0xB6:
-			if (!r4300i_LB_NonMemory(MemAddress,Reg,FALSE)) {
+			if (!r4300i_LB_NonMemory(MemAddress,(DWORD*)Reg,FALSE)) {
 				if (ShowUnhandledMemory) {
 					DisplayError("Failed to load byte\n\nMIPS Address: %X\nX86 Address",
 						(char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
@@ -1251,7 +1250,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;		
 		case 0xB7:
-			if (!r4300i_LH_NonMemory(MemAddress,Reg,FALSE)) {
+			if (!r4300i_LH_NonMemory(MemAddress, (DWORD*)Reg,FALSE)) {
 				if (ShowUnhandledMemory) {
 					DisplayError("Failed to load half word\n\nMIPS Address: %X\nX86 Address",
 						(char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
@@ -1261,7 +1260,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;		
 		case 0xBE:
-			if (!r4300i_LB_NonMemory(MemAddress,Reg,TRUE)) {
+			if (!r4300i_LB_NonMemory(MemAddress, (DWORD*)Reg,TRUE)) {
 				if (ShowUnhandledMemory) {
 					DisplayError("Failed to load byte\n\nMIPS Address: %X\nX86 Address",
 						(char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
@@ -1271,7 +1270,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;		
 		case 0xBF:
-			if (!r4300i_LH_NonMemory(MemAddress,Reg,TRUE)) {
+			if (!r4300i_LH_NonMemory(MemAddress, (DWORD*)Reg,TRUE)) {
 				if (ShowUnhandledMemory) {
 					DisplayError("Failed to load half word\n\nMIPS Address: %X\nX86 Address",
 						(char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
@@ -1289,7 +1288,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	case 0x66:
 		switch(*(TypePos + 1)) {
 		case 0x8B:
-			if (!r4300i_LH_NonMemory(MemAddress,Reg,FALSE)) {
+			if (!r4300i_LH_NonMemory(MemAddress, (DWORD*)Reg,FALSE)) {
 				if (ShowUnhandledMemory) {
 					DisplayError("Failed to half word\n\nMIPS Address: %X\nX86 Address",
 						(char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
@@ -1334,7 +1333,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 		lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 		return EXCEPTION_CONTINUE_EXECUTION;		
 	case 0x8A: 
-		if (!r4300i_LB_NonMemory(MemAddress,Reg,FALSE)) {
+		if (!r4300i_LB_NonMemory(MemAddress, (DWORD*)Reg,FALSE)) {
 			if (ShowUnhandledMemory) {
 				DisplayError("Failed to load byte\n\nMIPS Address: %X\nX86 Address",
 					(char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
@@ -1344,7 +1343,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 		lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 		return EXCEPTION_CONTINUE_EXECUTION;		
 	case 0x8B: 
-		if (!r4300i_LW_NonMemory(MemAddress,Reg)) {
+		if (!r4300i_LW_NonMemory(MemAddress, (DWORD*)Reg)) {
 			if (ShowUnhandledMemory) {
 				DisplayError("Failed to load word\n\nMIPS Address: %X\nX86 Address",
 					(char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
@@ -1395,7 +1394,7 @@ int r4300i_LB_NonMemory ( DWORD PAddr, DWORD * Value, BOOL SignExtend ) {
 		if ((PAddr & 2) == 0) { PAddr = (PAddr + 4) ^ 2; }
 		if ((PAddr - 0x10000000) < RomFileSize) {
 			if (SignExtend) {
-				(int)*Value = (char)ROM[PAddr - 0x10000000];
+				*Value = (char)ROM[PAddr - 0x10000000];
 			} else {
 				*Value = ROM[PAddr - 0x10000000];
 			}

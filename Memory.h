@@ -28,6 +28,8 @@
 
 #define ROM_IN_MAPSPACE
 
+#include <minwindef.h>
+
 extern DWORD *TLB_ReadMap, *TLB_WriteMap, RdramSize, SystemRdramSize;
 extern BYTE *N64MEM, *RDRAM, *DMEM, *IMEM, *ROM;
 extern void ** JumpTable, ** DelaySlotTable;

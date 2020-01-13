@@ -23,6 +23,9 @@
  * should be forwarded to them so if they want them.
  *
  */
+
+typedef unsigned __int64 QWORD;
+
 #define INDEX_REGISTER			CP0[0]
 #define RANDOM_REGISTER			CP0[1]
 #define ENTRYLO0_REGISTER		CP0[2]
@@ -353,11 +356,11 @@ typedef struct {
 	int        DMAUsed;
 } N64_REGISTERS;
 
-extern char *GPR_Name[32], *GPR_NameHi[32], *GPR_NameLo[32], *FPR_Name[32], *FPR_NameHi[32],
+extern const char *GPR_Name[32], *GPR_NameHi[32], *GPR_NameLo[32], *FPR_Name[32], *FPR_NameHi[32],
 	*FPR_NameLo[32],*FPR_Ctrl_Name[32],*Cop0_Name[32];
 extern DWORD PROGRAM_COUNTER, * CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
 	*RegRI,*RegSI, HalfLine, RegModValue, ViFieldNumber, LLBit, LLAddr;
-void * FPRDoubleLocation[32], * FPRFloatLocation[32];
+extern void * FPRDoubleLocation[32], * FPRFloatLocation[32];
 extern MIPS_DWORD *GPR, *FPR, HI, LO;
 extern N64_REGISTERS Registers;
 

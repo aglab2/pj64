@@ -23,6 +23,9 @@
  * should be forwarded to them so if they want them.
  *
  */
+
+#pragma once
+
 #include "InterpreterCPU.h"
 #include "InterpreterOps.h"
 #include "RecompilerCPU.h"

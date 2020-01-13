@@ -180,7 +180,7 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			char String[200];
 		
 			sprintf(String,"Software\\N64 Emulation\\%s",AppName);
-			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,(char*)"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
 				AutoFullScreen = SendMessage(GetDlgItem(hDlg,IDC_LOAD_FULLSCREEN),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
@@ -204,7 +204,7 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 	return TRUE;
 }
 
-void AddDropDownItem (HWND hDlg, WORD CtrlID, int StringID, int ItemData, int * Variable) {
+void AddDropDownItem (HWND hDlg, WORD CtrlID, int StringID, int ItemData, DWORD * Variable) {
 	HWND hCtrl = GetDlgItem(hDlg,CtrlID);
 	int indx;
 
@@ -243,8 +243,8 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		AddDropDownItem(hDlg,IDC_RDRAM_SIZE,RDRAM_4MB,0x400000,&SystemRdramSize);
 		AddDropDownItem(hDlg,IDC_RDRAM_SIZE,RDRAM_8MB,0x800000,&SystemRdramSize);
 
-		AddDropDownItem(hDlg,IDC_ABL,ABL_ON,TRUE,&SystemABL);
-		AddDropDownItem(hDlg,IDC_ABL,ABL_OFF,FALSE,&SystemABL);
+		AddDropDownItem(hDlg,IDC_ABL,ABL_ON,TRUE,(DWORD*)&SystemABL);
+		AddDropDownItem(hDlg,IDC_ABL,ABL_OFF,FALSE, (DWORD*)&SystemABL);
 		break;
 	case WM_NOTIFY:
 		if (((NMHDR FAR *) lParam)->code == PSN_APPLY) {
@@ -254,7 +254,7 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			char String[200];
 		
 			sprintf(String,"Software\\N64 Emulation\\%s",AppName);
-			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,(char*)"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
 				AutoStart = SendMessage(GetDlgItem(hDlg,IDC_START_ON_ROM_OPEN),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
@@ -473,7 +473,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			char String[200];
 		
 			sprintf(String,"Software\\N64 Emulation\\%s",AppName);
-			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,(char*)"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
 				DWORD Value;
@@ -590,7 +590,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				strcat(Plugin,PluginNames[index]);
 				hLib = LoadLibrary(Plugin);		
 				if (hLib == NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
-				GFXDllAbout = (void (__cdecl *)(HWND))GetProcAddress( hLib, "DllAbout" );
+				GFXDllAbout = (void (__cdecl *)(HWND))GetProcAddress( (HMODULE)hLib, "DllAbout" );
 				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout != NULL ? TRUE:FALSE);
 			}
 			break;
@@ -604,7 +604,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				strcat(Plugin,PluginNames[index]);
 				hLib = LoadLibrary(Plugin);		
 				if (hLib == NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
-				AiDllAbout = (void (__cdecl *)(HWND))GetProcAddress( hLib, "DllAbout" );
+				AiDllAbout = (void (__cdecl *)(HWND))GetProcAddress((HMODULE)hLib, "DllAbout" );
 				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout != NULL ? TRUE:FALSE);
 			}
 			break;
@@ -618,7 +618,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				strcat(Plugin,PluginNames[index]);
 				hLib = LoadLibrary(Plugin);		
 				if (hLib == NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
-				ContDllAbout = (void (__cdecl *)(HWND))GetProcAddress( hLib, "DllAbout" );
+				ContDllAbout = (void (__cdecl *)(HWND))GetProcAddress((HMODULE)hLib, "DllAbout" );
 				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout != NULL ? TRUE:FALSE);
 			}
 			break;
@@ -648,7 +648,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			}
 
 			sprintf(String,"Software\\N64 Emulation\\%s\\Dll",AppName);
-			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,(char*)"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
 				DWORD index;
@@ -827,7 +827,7 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			Rercursion = SendMessage(GetDlgItem(hDlg,IDC_RECURSION),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 
 			sprintf(String,"Software\\N64 Emulation\\%s",AppName);
-			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
 				RegSetValueEx(hKeyResults,"Use Rom Browser",0,REG_DWORD,(BYTE *)&RomBrowser,sizeof(DWORD));
@@ -991,12 +991,12 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		AddDropDownItem(hDlg,IDC_COUNTFACT,NUMBER_5,5,&RomCF);
 		AddDropDownItem(hDlg,IDC_COUNTFACT,NUMBER_6,6,&RomCF);
 
-		SetFlagControl(hDlg,&RomUseLargeBuffer, IDC_LARGE_COMPILE_BUFFER, ROM_LARGE_BUFFER);
-		SetFlagControl(hDlg,&RomUseTlb, IDC_USE_TLB, ROM_USE_TLB);
-		SetFlagControl(hDlg,&RomUseCache, IDC_ROM_REGCACHE, ROM_REG_CACHE);
-		SetFlagControl(hDlg,&RomDelaySI, IDC_DELAY_SI, ROM_DELAY_SI);
-		SetFlagControl(hDlg,&RomAudioSignal, IDC_AUDIO_SIGNAL, ROM_AUDIO_SIGNAL);
-		SetFlagControl(hDlg,&RomSPHack, IDC_ROM_SPHACK, ROM_SP_HACK);
+		SetFlagControl(hDlg, (BOOL*)&RomUseLargeBuffer, IDC_LARGE_COMPILE_BUFFER, ROM_LARGE_BUFFER);
+		SetFlagControl(hDlg, (BOOL*)&RomUseTlb, IDC_USE_TLB, ROM_USE_TLB);
+		SetFlagControl(hDlg, (BOOL*)&RomUseCache, IDC_ROM_REGCACHE, ROM_REG_CACHE);
+		SetFlagControl(hDlg, (BOOL*)&RomDelaySI, IDC_DELAY_SI, ROM_DELAY_SI);
+		SetFlagControl(hDlg, (BOOL*)&RomAudioSignal, IDC_AUDIO_SIGNAL, ROM_AUDIO_SIGNAL);
+		SetFlagControl(hDlg, (BOOL*)&RomSPHack, IDC_ROM_SPHACK, ROM_SP_HACK);
 				
 		if (strlen(RomName) == 0) {
 			EnableWindow(GetDlgItem(hDlg,IDC_MEMORY_SIZE_TEXT),FALSE);

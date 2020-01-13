@@ -79,21 +79,21 @@ void SetupTLB_Entry (int Entry) {
 
 	if (!tlb[Entry].EntryDefined) { return; }
 	FastIndx = Entry << 1;
-	FastTlb[FastIndx].VSTART=tlb[Entry].EntryHi.VPN2 << 13;
-	FastTlb[FastIndx].VEND = FastTlb[FastIndx].VSTART + (tlb[Entry].PageMask.Mask << 12) + 0xFFF;
-	FastTlb[FastIndx].PHYSSTART = tlb[Entry].EntryLo0.PFN << 12;
-	FastTlb[FastIndx].VALID = tlb[Entry].EntryLo0.V;
-	FastTlb[FastIndx].DIRTY = tlb[Entry].EntryLo0.D; 
-	FastTlb[FastIndx].GLOBAL = tlb[Entry].EntryLo0.GLOBAL & tlb[Entry].EntryLo1.GLOBAL;
+	FastTlb[FastIndx].VSTART=tlb[Entry].EntryHi.v.VPN2 << 13;
+	FastTlb[FastIndx].VEND = FastTlb[FastIndx].VSTART + (tlb[Entry].PageMask.v.Mask << 12) + 0xFFF;
+	FastTlb[FastIndx].PHYSSTART = tlb[Entry].EntryLo0.v.PFN << 12;
+	FastTlb[FastIndx].VALID = tlb[Entry].EntryLo0.v.V;
+	FastTlb[FastIndx].DIRTY = tlb[Entry].EntryLo0.v.D;
+	FastTlb[FastIndx].GLOBAL = tlb[Entry].EntryLo0.v.GLOBAL & tlb[Entry].EntryLo1.v.GLOBAL;
 	FastTlb[FastIndx].ValidEntry = FALSE;
 
 	FastIndx = (Entry << 1) + 1;
-	FastTlb[FastIndx].VSTART=(tlb[Entry].EntryHi.VPN2 << 13) + ((tlb[Entry].PageMask.Mask << 12) + 0xFFF + 1);
-	FastTlb[FastIndx].VEND = FastTlb[FastIndx].VSTART + (tlb[Entry].PageMask.Mask << 12) + 0xFFF;
-	FastTlb[FastIndx].PHYSSTART = tlb[Entry].EntryLo1.PFN << 12;
-	FastTlb[FastIndx].VALID = tlb[Entry].EntryLo1.V;
-	FastTlb[FastIndx].DIRTY = tlb[Entry].EntryLo1.D; 
-	FastTlb[FastIndx].GLOBAL = tlb[Entry].EntryLo0.GLOBAL & tlb[Entry].EntryLo1.GLOBAL;
+	FastTlb[FastIndx].VSTART=(tlb[Entry].EntryHi.v.VPN2 << 13) + ((tlb[Entry].PageMask.v.Mask << 12) + 0xFFF + 1);
+	FastTlb[FastIndx].VEND = FastTlb[FastIndx].VSTART + (tlb[Entry].PageMask.v.Mask << 12) + 0xFFF;
+	FastTlb[FastIndx].PHYSSTART = tlb[Entry].EntryLo1.v.PFN << 12;
+	FastTlb[FastIndx].VALID = tlb[Entry].EntryLo1.v.V;
+	FastTlb[FastIndx].DIRTY = tlb[Entry].EntryLo1.v.D;
+	FastTlb[FastIndx].GLOBAL = tlb[Entry].EntryLo0.v.GLOBAL & tlb[Entry].EntryLo1.v.GLOBAL;
 	FastTlb[FastIndx].ValidEntry = FALSE;
 
 	for ( FastIndx = Entry << 1; FastIndx <= (Entry << 1) + 1; FastIndx++) {
@@ -143,8 +143,8 @@ void TLB_Probe (void) {
 #endif
 	INDEX_REGISTER |= 0x80000000;
 	for (Counter = 0; Counter < 32; Counter ++) {		
-		DWORD TlbValue = tlb[Counter].EntryHi.Value & (~tlb[Counter].PageMask.Mask << 13);
-		DWORD EntryHi = ENTRYHI_REGISTER & (~tlb[Counter].PageMask.Mask << 13);
+		DWORD TlbValue = tlb[Counter].EntryHi.Value & (~tlb[Counter].PageMask.v.Mask << 13);
+		DWORD EntryHi = ENTRYHI_REGISTER & (~tlb[Counter].PageMask.v.Mask << 13);
 
 		if (TlbValue == EntryHi) {			
 			BOOL Global = (tlb[Counter].EntryHi.Value & 0x100) != 0;

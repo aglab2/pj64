@@ -23,6 +23,7 @@
  * should be forwarded to them so if they want them.
  *
  */
+
 extern DWORD RomFileSize, RomRamSize, RomSaveUsing, RomCPUType, RomSelfMod, 
 	RomUseTlb, RomUseLinking, RomCF, RomUseLargeBuffer, RomUseCache,
 	RomDelaySI, RomSPHack, RomAudioSignal;
@@ -31,7 +32,7 @@ extern char LastRoms[10][MAX_PATH+1], LastDirs[10][MAX_PATH+1];
 
 void AddRecentFile           ( HWND hWnd, char * addition );
 void ChangeRomOptionMemSize  ( DWORD NewSize );
-void ChangeRomOptionSaveType ( enum SaveType type );
+void ChangeRomOptionSaveType ( int type );
 void GetRomDirectory         ( char * Directory );
 BOOL LoadDataFromRomFile     ( char * FileName,BYTE * Data,int DataLen, int * RomSize );
 BOOL LoadRomHeader           ( void );

@@ -248,7 +248,7 @@ void ChangeWinSize ( HWND hWnd, long width, long height, HWND hStatusBar ) {
 		rc1.right - rc1.left, rc1.bottom - rc1.top, TRUE );
 }
 
-void __cdecl DisplayError (char * Message, ...) {
+void __cdecl DisplayError (const char * Message, ...) {
 	char Msg[1000];
 	va_list ap;
 
@@ -289,41 +289,41 @@ void FixMenuLang (HMENU hMenu) {
 
 	//File
 	hSubMenu = GetSubMenu(hMenu,0);
-	MenuSetText(hSubMenu, 0, GS(MENU_OPEN), "Ctrl+O");
+	MenuSetText(hSubMenu, 0, GS(MENU_OPEN), (char*)"Ctrl+O");
 	MenuSetText(hSubMenu, 1, GS(MENU_ROM_INFO), NULL);
-	MenuSetText(hSubMenu, 3, GS(MENU_START), "F11");
-	MenuSetText(hSubMenu, 4, GS(MENU_END), "F12");
+	MenuSetText(hSubMenu, 3, GS(MENU_START), (char*)"F11");
+	MenuSetText(hSubMenu, 4, GS(MENU_END), (char*)"F12");
 	MenuSetText(hSubMenu, 6, GS(MENU_LANGUAGE), NULL);
 	MenuSetText(hSubMenu, 8, GS(MENU_CHOOSE_ROM), NULL);
-	MenuSetText(hSubMenu, 9, GS(MENU_REFRESH), "F5");
+	MenuSetText(hSubMenu, 9, GS(MENU_REFRESH), (char*)"F5");
 	MenuSetText(hSubMenu, 11, GS(MENU_RECENT_ROM), NULL);
 	MenuSetText(hSubMenu, 12, GS(MENU_RECENT_DIR), NULL);
-	MenuSetText(hSubMenu, 14, GS(MENU_EXIT), "Alt+F4");
+	MenuSetText(hSubMenu, 14, GS(MENU_EXIT), (char*)"Alt+F4");
 
 	//System
 	hSubMenu = GetSubMenu(hMenu,1);
-	MenuSetText(hSubMenu, 0, GS(MENU_RESET),"F1");
-	MenuSetText(hSubMenu, 1, GS(CPU_Paused?MENU_RESUME:MENU_PAUSE),"F2");
-	MenuSetText(hSubMenu, 2, GS(MENU_BITMAP),"F3");
-	MenuSetText(hSubMenu, 4, GS(MENU_LIMIT_FPS),"F4");
-	MenuSetText(hSubMenu, 6, GS(MENU_SAVE),"F5");
-	MenuSetText(hSubMenu, 7, GS(MENU_SAVE_AS),"Ctrl+S");
-	MenuSetText(hSubMenu, 8, GS(MENU_RESTORE),"F7");
-	MenuSetText(hSubMenu, 9, GS(MENU_LOAD),"Ctrl+L");
+	MenuSetText(hSubMenu, 0, GS(MENU_RESET), (char*)"F1");
+	MenuSetText(hSubMenu, 1, GS(CPU_Paused?MENU_RESUME:MENU_PAUSE), (char*)"F2");
+	MenuSetText(hSubMenu, 2, GS(MENU_BITMAP), (char*)"F3");
+	MenuSetText(hSubMenu, 4, GS(MENU_LIMIT_FPS), (char*)"F4");
+	MenuSetText(hSubMenu, 6, GS(MENU_SAVE), (char*)"F5");
+	MenuSetText(hSubMenu, 7, GS(MENU_SAVE_AS), (char*)"Ctrl+S");
+	MenuSetText(hSubMenu, 8, GS(MENU_RESTORE), (char*)"F7");
+	MenuSetText(hSubMenu, 9, GS(MENU_LOAD), (char*)"Ctrl+L");
 	MenuSetText(hSubMenu,11, GS(MENU_CURRENT_SAVE),NULL);
-	MenuSetText(hSubMenu,13, GS(MENU_CHEAT),"Ctrl+C");
-	MenuSetText(hSubMenu,14, GS(MENU_GS_BUTTON),"F9");
+	MenuSetText(hSubMenu,13, GS(MENU_CHEAT), (char*)"Ctrl+C");
+	MenuSetText(hSubMenu,14, GS(MENU_GS_BUTTON), (char*)"F9");
 
 	//Options
 	hSubMenu = GetSubMenu(hMenu,2);
-	MenuSetText(hSubMenu, 0, GS(MENU_FULL_SCREEN), "Alt+Enter");
-	MenuSetText(hSubMenu, 1, GS(MENU_ON_TOP), "Ctrl+A");
+	MenuSetText(hSubMenu, 0, GS(MENU_FULL_SCREEN), (char*)"Alt+Enter");
+	MenuSetText(hSubMenu, 1, GS(MENU_ON_TOP), (char*)"Ctrl+A");
 	MenuSetText(hSubMenu, 3, GS(MENU_CONFG_GFX), NULL);
 	MenuSetText(hSubMenu, 4, GS(MENU_CONFG_AUDIO), NULL);
 	MenuSetText(hSubMenu, 5, GS(MENU_CONFG_CTRL), NULL);
 	MenuSetText(hSubMenu, 6, GS(MENU_CONFG_RSP), NULL);
 	MenuSetText(hSubMenu, 8, GS(MENU_SHOW_CPU), NULL);
-	MenuSetText(hSubMenu, 9, GS(MENU_SETTINGS), "Ctrl+T");
+	MenuSetText(hSubMenu, 9, GS(MENU_SETTINGS), (char*)"Ctrl+T");
 
 	//Help Menu
 	hSubMenu = GetSubMenu(hMenu,4);
@@ -344,17 +344,17 @@ void FixMenuLang (HMENU hMenu) {
 	//Save Slot
 	hSubMenu = GetSubMenu(hMenu,1);
 	hSubMenu = GetSubMenu(hSubMenu,11);
-	MenuSetText(hSubMenu, 0, GS(MENU_SLOT_DEFAULT), "~");
-	MenuSetText(hSubMenu, 2, GS(MENU_SLOT_1), "1");
-	MenuSetText(hSubMenu, 3, GS(MENU_SLOT_2), "2");
-	MenuSetText(hSubMenu, 4, GS(MENU_SLOT_3), "3");
-	MenuSetText(hSubMenu, 5, GS(MENU_SLOT_4), "4");
-	MenuSetText(hSubMenu, 6, GS(MENU_SLOT_5), "5");
-	MenuSetText(hSubMenu, 7, GS(MENU_SLOT_6), "6");
-	MenuSetText(hSubMenu, 8, GS(MENU_SLOT_7), "7");
-	MenuSetText(hSubMenu, 9, GS(MENU_SLOT_8), "8");
-	MenuSetText(hSubMenu, 10, GS(MENU_SLOT_9), "9");
-	MenuSetText(hSubMenu, 11, GS(MENU_SLOT_10), "0");
+	MenuSetText(hSubMenu, 0, GS(MENU_SLOT_DEFAULT), (char*)"~");
+	MenuSetText(hSubMenu, 2, GS(MENU_SLOT_1), (char*)"1");
+	MenuSetText(hSubMenu, 3, GS(MENU_SLOT_2), (char*)"2");
+	MenuSetText(hSubMenu, 4, GS(MENU_SLOT_3), (char*)"3");
+	MenuSetText(hSubMenu, 5, GS(MENU_SLOT_4), (char*)"4");
+	MenuSetText(hSubMenu, 6, GS(MENU_SLOT_5), (char*)"5");
+	MenuSetText(hSubMenu, 7, GS(MENU_SLOT_6), (char*)"6");
+	MenuSetText(hSubMenu, 8, GS(MENU_SLOT_7), (char*)"7");
+	MenuSetText(hSubMenu, 9, GS(MENU_SLOT_8), (char*)"8");
+	MenuSetText(hSubMenu, 10, GS(MENU_SLOT_9), (char*)"9");
+	MenuSetText(hSubMenu, 11, GS(MENU_SLOT_10), (char*)"0");
 }
 
 char * GetExtIniFileName(void) {
@@ -401,7 +401,7 @@ char * GetNotesIniFileName(void) {
 	return IniFileName;
 }
 
-int GetStoredWinPos( char * WinName, DWORD * X, DWORD * Y ) {
+int GetStoredWinPos(const char * WinName, DWORD * X, DWORD * Y ) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
@@ -435,7 +435,7 @@ int GetStoredWinPos( char * WinName, DWORD * X, DWORD * Y ) {
 	return FALSE;
 }
 
-int GetStoredWinSize( char * WinName, DWORD * Width, DWORD * Height ) {
+int GetStoredWinSize(const char * WinName, DWORD * Width, DWORD * Height ) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
@@ -665,7 +665,7 @@ void CheckedMenuItem(UINT uMenuID, BOOL * Flag, char * FlagName) {
 	}
 
 	sprintf(String,"Software\\N64 Emulation\\%s",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER,String,0,"",
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER,String,0, (char*)"",
 		REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 
 	if (lResult == ERROR_SUCCESS) { 
@@ -729,7 +729,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			if (!ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); break; }  
 		}
 		if (!RomListVisible() || (RomListVisible() && !IsRomBrowserMaximized())) {
-			StoreCurrentWinPos( RomListVisible()?"Main.RomList":"Main", hWnd );
+			StoreCurrentWinPos( RomListVisible()? (char*)"Main.RomList": (char*)"Main", hWnd );
 		}
 		break;
 	case WM_SIZE:
@@ -985,7 +985,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 				openfilename.lStructSize  = sizeof( openfilename );
 				openfilename.hwndOwner    = hMainWindow;
-				openfilename.lpstrFilter  = "PJ64 Saves (*.zip, *.pj)\0*.pj?;*.pj;*.zip;";
+				openfilename.lpstrFilter  = (char*)"PJ64 Saves (*.zip, *.pj)\0*.pj?;*.pj;*.zip;";
 				openfilename.lpstrFile    = SaveFile;
 				openfilename.lpstrInitialDir    = Directory;
 				openfilename.nMaxFile     = MAX_PATH;
@@ -1007,7 +1007,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case ID_SYSTEM_LIMITFPS: 
 			if (BasicMode) { break; }
-			CheckedMenuItem(ID_SYSTEM_LIMITFPS,&LimitFPS,"Limit FPS"); 
+			CheckedMenuItem(ID_SYSTEM_LIMITFPS,&LimitFPS, (char*)"Limit FPS");
 			break;
 		case ID_CURRENTSAVE_DEFAULT: SetCurrentSaveState(hWnd,LOWORD(wParam)); break;
 		case ID_CURRENTSAVE_0: SetCurrentSaveState(hWnd,LOWORD(wParam)); break;
@@ -1036,7 +1036,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case ID_OPTIONS_ALWAYSONTOP: 
 			if (BasicMode) { break; }
-			CheckedMenuItem(ID_OPTIONS_ALWAYSONTOP,&AlwaysOnTop,"Always On Top"); 
+			CheckedMenuItem(ID_OPTIONS_ALWAYSONTOP,&AlwaysOnTop, (char*)"Always On Top");
 			AlwaysOnTopWindow(hWnd);
 			break;
 		case ID_OPTIONS_CONFIG_GFX: GFXDllConfig(hWnd); break;
@@ -1046,7 +1046,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_OPTIONS_SETTINGS: ChangeSettings(hWnd); break;
 		case ID_OPTIONS_CHEATS: ManageCheats(NULL); break;
 		case ID_OPTIONS_SHOWCPUUSAGE:
-			CheckedMenuItem(ID_OPTIONS_SHOWCPUUSAGE,&ShowCPUPer,"Show CPU %");
+			CheckedMenuItem(ID_OPTIONS_SHOWCPUUSAGE,&ShowCPUPer, (char*)"Show CPU %");
 			break;
 #if (!defined(EXTERNAL_RELEASE))
 		case ID_OPTIONS_PROFILING_ON:
@@ -1406,7 +1406,7 @@ void MenuSetText ( HMENU hMenu, int MenuPos, char * Title, char * ShotCut) {
 	SetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
 }
 
-void RegisterExtension ( char * Extension, BOOL RegisterWithPj64 ) {
+void RegisterExtension ( const char * Extension, BOOL RegisterWithPj64 ) {
 	char ShortAppName[] = { "PJ64" }; 
 	char sKeyValue[] = { "Project 64" };
   	char app_path[_MAX_PATH];
@@ -1420,14 +1420,14 @@ void RegisterExtension ( char * Extension, BOOL RegisterWithPj64 ) {
 	GetModuleFileName(NULL,app_path,sizeof(app_path));
  
 	//creates a Root entry for sKeyName
-	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, ShortAppName,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, ShortAppName,0, (char*)"", REG_OPTION_NON_VOLATILE,
 			KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	RegSetValueEx(hKeyResults,"",0,REG_SZ,(BYTE *)sKeyValue,sizeof(sKeyValue));
 	RegCloseKey(hKeyResults);
 
 	// Set the command line for "MyApp".
 	sprintf(String,"%s\\DefaultIcon",ShortAppName);
-	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 			KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	sprintf(String,"%s",app_path);
 	RegSetValueEx(hKeyResults,"",0,REG_SZ,(BYTE *)String,strlen(String));
@@ -1435,14 +1435,14 @@ void RegisterExtension ( char * Extension, BOOL RegisterWithPj64 ) {
 	
 	//set the icon for the file extension
 	sprintf(String,"%s\\shell\\open\\command",ShortAppName);
-	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 			KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	sprintf(String,"%s %%1",app_path);
 	RegSetValueEx(hKeyResults,"",0,REG_SZ,(BYTE *)String,strlen(String));
 	RegCloseKey(hKeyResults);
 
 	// creates a Root entry for passed associated with sKeyName
-	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, Extension,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CLASSES_ROOT, Extension,0, (char*)"", REG_OPTION_NON_VOLATILE,
 			KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (RegisterWithPj64) {
 		RegSetValueEx(hKeyResults,"",0,REG_SZ,(BYTE *)ShortAppName,sizeof(ShortAppName));
@@ -1590,7 +1590,7 @@ LRESULT CALLBACK RomInfoProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 	return TRUE;
 }
 
-BOOL TestExtensionRegistered ( char * Extension ) {
+BOOL TestExtensionRegistered ( const char * Extension ) {
 	char ShortAppName[] = { "PJ64" }; 
 	HKEY hKeyResults = 0;
 	char Association[100];
@@ -1870,7 +1870,7 @@ void StoreCurrentWinPos (  char * WinName, HWND hWnd ) {
 
 	GetWindowRect(hWnd, &WinRect );
 	sprintf(String,"Software\\N64 Emulation\\%s\\Page Setup",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		sprintf(String,"%s Top",WinName);
@@ -1894,7 +1894,7 @@ void StoreCurrentWinSize (  char * WinName, HWND hWnd ) {
 	WinRect.bottom -= WinRect.top;
 	WinRect.right -= WinRect.left;
 	sprintf(String,"Software\\N64 Emulation\\%s\\Page Setup",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		sprintf(String,"%s Height",WinName);
@@ -1917,7 +1917,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszArgs,
 	//DisplayError("%X",r4300i_COP1_MF);
 	if ( !InitalizeApplication (hInstance) ) { return FALSE; }
 	if ( !RegisterWinClass () ) { return FALSE; }
-	if ( !GetStoredWinPos( "Main", &X, &Y ) ) {
+	if ( !GetStoredWinPos( (char*) "Main", &X, &Y ) ) {
   		X = (GetSystemMetrics( SM_CXSCREEN ) - WindowWidth) / 2;
 		Y = (GetSystemMetrics( SM_CYSCREEN ) - WindowHeight) / 2;
 	}

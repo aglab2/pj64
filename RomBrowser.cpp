@@ -243,7 +243,7 @@ void IndexRomDataBase (void) {
 	DataLeft = 0;
 	do {
 		Fpos = ftell(fInput) - DataLeft;
-		result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+		result = fGetString2(fInput,&Input,(BYTE**) &Data,&DataLen,&DataLeft);
 		if (result <= 1) { continue; }
 		
 		Pos = Input;
@@ -550,7 +550,7 @@ BOOL FillRomInfo(ROM_INFO * pRomInfo) {
 	pRomInfo->CRC1 = *(DWORD *)(RomData + 0x10);
 	pRomInfo->CRC2 = *(DWORD *)(RomData + 0x14);
 	if (RomBrowserFields[RB_CICChip].Pos >= 0) {
-		pRomInfo->CicChip = GetCicChipID(RomData);
+		pRomInfo->CicChip = GetCicChipID((char*) RomData);
 	}
 	
 	FillRomExtensionInfo(pRomInfo);
@@ -963,7 +963,7 @@ void SaveRomBrowserColoumnInfo (void) {
 	long  lResult;
 
 	sprintf(String,"Software\\N64 Emulation\\%s\\Rom Browser",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		int Coloumn, index;
@@ -991,7 +991,7 @@ void SaveRomBrowserColoumnPosition (int index, int Position) {
 	long  lResult;
 
 	sprintf(String,"Software\\N64 Emulation\\%s\\Rom Browser",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		sprintf(szPos,"%d",Position);
@@ -1070,7 +1070,7 @@ void SetRomBrowserMaximized (BOOL Maximized) {
 	char String[200];
 
 	sprintf(String,"Software\\N64 Emulation\\%s\\Page Setup",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"RomBrowser Maximized",0, REG_DWORD,(CONST BYTE *)(&Maximized),sizeof(DWORD));
@@ -1085,7 +1085,7 @@ void SetRomBrowserSize ( int nWidth, int nHeight ) {
 	char String[200];
 
 	sprintf(String,"Software\\N64 Emulation\\%s\\Page Setup",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"Rom Browser Width",0, REG_DWORD,(CONST BYTE *)(&nWidth),sizeof(DWORD));
@@ -1101,7 +1101,7 @@ void SetSortAscending (BOOL Ascending, int Index) {
 	char String[200];
 
 	sprintf(String,"Software\\N64 Emulation\\%s\\Page Setup",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		char Key[100];
@@ -1119,7 +1119,7 @@ void SetSortField (char * FieldName, int Index) {
 	char String[200];
 
 	sprintf(String,"Software\\N64 Emulation\\%s\\Page Setup",AppName);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		char Key[100];

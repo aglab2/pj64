@@ -721,7 +721,7 @@ void ExecuteInterpreterOpCode (void) {
 					sprintf(Label,"PC: %X",PROGRAM_COUNTER);
 					StartTimer(Label);
 				} else {
-					StartTimer("r4300i Running");
+					StartTimer((char*)"r4300i Running");
 				}
 			}
 			if (CPU_Type != CPU_SyncCores) {
@@ -779,7 +779,7 @@ void StartInterpreterCPU (void ) {
 				} while (CPU_Action.Stepping);
 			}
 #endif
-			if ((Profiling || ShowCPUPer) && ProfilingLabel[0] == 0) { StartTimer("r4300i Running"); };
+			if ((Profiling || ShowCPUPer) && ProfilingLabel[0] == 0) { StartTimer((char*)"r4300i Running"); };
 			ExecuteInterpreterOpCode();
 		}
 	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {

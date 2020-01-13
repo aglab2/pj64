@@ -28,6 +28,7 @@ void SwitchSyncRegisters (void);
 void SyncToPC       ( void );
 void FreeSyncMemory ( void );
 
+#include <minwindef.h>
 
 extern int SyncNextInstruction, SyncJumpToLocation, MemAddrUsedCount[2];
 extern DWORD CurrentBlock, *TLB_SyncReadMap, *TLB_SyncWriteMap;

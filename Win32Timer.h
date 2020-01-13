@@ -23,6 +23,9 @@
  * should be forwarded to them so if they want them.
  *
  */
+
+#include <minwindef.h>
+
 void Timer_Initialize  ( double Hertz);
 void Timer_Start       ( void );
 void Timer_Stop        ( void );

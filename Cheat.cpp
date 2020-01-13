@@ -100,7 +100,7 @@ enum TV_CHECK_STATE{
 	TV_STATE_CLEAR,
 	TV_STATE_CHECKED,
 	TV_STATE_INDETERMINATE,
-} DialogState;
+};
 
 int MinSizeDlg;
 int MaxSizeDlg;
@@ -668,9 +668,9 @@ int ReadCodeString (HWND hDlg) {
 	int numlines, linecount, len;
 	char str[128];
 	int i;
-	char* formatnormal =   "XXXXXXXX XXXX";
-	char* formatoptionlb = "XXXXXXXX XX??";
-	char* formatoptionw =  "XXXXXXXX ????";
+	char* formatnormal =   (char*) "XXXXXXXX XXXX";
+	char* formatoptionlb = (char*) "XXXXXXXX XX??";
+	char* formatoptionw =  (char*) "XXXXXXXX ????";
 	char tempformat[128];
 
 	validcodes = TRUE;
@@ -933,7 +933,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					return TRUE;
 				}
 				CheatLen = strlen(NewCheatName) + strlen(codestring);
-				cheat = malloc(CheatLen + 3);
+				cheat = (char*) malloc(CheatLen + 3);
 				sprintf(cheat,"\"%s\"",NewCheatName);
 
 				strcat(cheat, codestring);
@@ -946,7 +946,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				if (cheat) { free(cheat); cheat = NULL; }
 
 				if (validoptions) {
-					cheat = malloc(strlen(optionsstring) + 1);
+					cheat = (char*) malloc(strlen(optionsstring) + 1);
 					strcpy(cheat, optionsstring+1);
 					sprintf(NewCheatName,"Cheat%d_O",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
@@ -955,7 +955,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 				CheatLen = SendDlgItemMessage(hDlg,IDC_NOTES,WM_GETTEXTLENGTH,0,0) + 5;
 				if (CheatLen > 5) {
-					cheat = malloc(CheatLen);
+					cheat = (char*) malloc(CheatLen);
 					GetDlgItemText(hDlg,IDC_NOTES,cheat,CheatLen);
 					sprintf(NewCheatName,"Cheat%d_N",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
@@ -1026,7 +1026,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			
 			//Add Gameshark codes to screen			
 			ReadPos = strrchr(String,'"') + 2;
-			Buffer = malloc(strlen(ReadPos) + MaxGSEntries);
+			Buffer = (char*) malloc(strlen(ReadPos) + MaxGSEntries);
 			strcpy(Buffer,"");
 			do {
 				strncat(Buffer,ReadPos,strchr(ReadPos,',') - ReadPos);
@@ -1045,7 +1045,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 			if (strlen(String) > 0) {
 				ReadPos = strchr(String,'$') + 1;
-				Buffer = malloc(strlen(ReadPos) + 2);
+				Buffer = (char*) malloc(strlen(ReadPos) + 2);
 				strcpy(Buffer,"");
 				do {
 					strncat(Buffer,ReadPos,strchr(ReadPos,',') - ReadPos);
@@ -1122,7 +1122,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			break;
 		case IDC_ADD:
 			{
-				char Identifier[100], Key[100], * Ext[] = {"", "_N", "_O", "_R" };
+				char Identifier[100], Key[100], * Ext[] = { (char*)"",  (char*)"_N", (char*)"_O",  (char*)"_R" };
 				char NewCheatName[200], * cheat;
 				int CheatLen, type;
 				LPSTR IniFileName;
@@ -1138,7 +1138,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				//Insert New Entries
 				GetDlgItemText(hDlg,IDC_CODE_NAME,NewCheatName,sizeof(NewCheatName));
 				CheatLen = strlen(NewCheatName) + strlen(codestring);
-				cheat = malloc(CheatLen + 3);
+				cheat = (char*) malloc(CheatLen + 3);
 				sprintf(cheat,"\"%s\"",NewCheatName);
 				strcat(cheat, codestring);
 
@@ -1149,7 +1149,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				if (cheat) { free(cheat); cheat = NULL; }
 
 				if (validoptions) {
-					cheat = malloc(strlen(optionsstring) + 1);
+					cheat = (char*) malloc(strlen(optionsstring) + 1);
 					strcpy(cheat, optionsstring+1);
 					sprintf(NewCheatName,"Cheat%d_O",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
@@ -1158,7 +1158,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 				CheatLen = SendDlgItemMessage(hDlg,IDC_NOTES,WM_GETTEXTLENGTH,0,0) + 5;
 				if (CheatLen > 5) {
-					cheat = malloc(CheatLen);
+					cheat = (char*) malloc(CheatLen);
 					GetDlgItemText(hDlg,IDC_NOTES,cheat,CheatLen);
 					sprintf(NewCheatName,"Cheat%d_N",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
@@ -1480,7 +1480,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 }
 
 void DeleteCheat(int CheatNo) {
-	char Identifier[100], Key[100], * Ext[] = {"", "_N", "_O", "_R" };
+	char Identifier[100], Key[100], * Ext[] = { (char*)"", (char*)"_N", (char*)"_O", (char*)"_R" };
 	LPSTR IniFileName;
 	int type;
 
@@ -1504,7 +1504,7 @@ void RenameCheat(int CheatNo) {
 	FILE * fInput;
 
 #ifdef WIN32
-char * LineFeed = "\r\n";
+char * LineFeed = (char*) "\r\n";
 #else
 char * LineFeed = "\n";
 #endif
@@ -1523,7 +1523,7 @@ char * LineFeed = "\n";
 		if (strcmp(Identifier,CurrentSection) != 0) { 
 			Fpos = ftell(fInput) - DataLeft;
 		}
-		result = fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
+		result = fGetString2(fInput,&Input,(BYTE**) &Data,&DataLen,&DataLeft);
 		if (result <= 1) { continue; }
 		
 		Pos = Input;
@@ -1821,11 +1821,11 @@ void ManageCheats (HWND hParent) {
 		CreateDialog(hInst, MAKEINTRESOURCE(IDD_MANAGECHEATS), hParent, (DLGPROC)ManageCheatsProc);
 	}*/
 
-	if ( !GetStoredWinSize( "Cheat", &WindowWidth, &WindowHeight ) ) {
+	if ( !GetStoredWinSize( (char*) "Cheat", &WindowWidth, &WindowHeight ) ) {
   		WindowWidth = DefaultWindowWidth;
   		WindowHeight = DefaultWindowHeight;
 	}
-	if ( !GetStoredWinPos( "Cheat", &X, &Y ) ) {
+	if ( !GetStoredWinPos((char*) "Cheat", &X, &Y ) ) {
   		X = (GetSystemMetrics( SM_CXSCREEN ) - WindowWidth) / 2;
 		Y = (GetSystemMetrics( SM_CYSCREEN ) - WindowHeight) / 2;
 	}
@@ -1865,7 +1865,7 @@ LRESULT CALLBACK Cheat_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		break;	
 	case WM_MOVE:
 		if (IsIconic(hWnd)) { break; }
-		StoreCurrentWinPos("Cheat", hWnd );
+		StoreCurrentWinPos((char*)"Cheat", hWnd );
 		break;
 	case UM_CLOSE_CHEATS:
 		DestroyWindow(hWnd);
@@ -1910,7 +1910,7 @@ LRESULT CALLBACK Cheat_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			int nWidth = LOWORD(lParam);  // width of client area 
 			int nHeight = HIWORD(lParam); // height of client area 
 			SetWindowPos(hSelectCheat,HWND_TOP,5,5,nWidth - 8,nHeight - 10,SWP_NOOWNERZORDER);
-			StoreCurrentWinSize("Cheat",hWnd);
+			StoreCurrentWinSize((char*)"Cheat",hWnd);
 		}
 		break;
 	case WM_DESTROY:
@@ -1970,7 +1970,7 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 			GetClientRect(hDlg, rc);
 			hStateButton = GetDlgItem(hDlg, IDC_STATE);
-			SetWindowPos(hStateButton, HWND_TOP, (rc->right - rc->left) - 16, 0, 16, rc->bottom - rc->top, 0);
+			SetWindowPos((HWND)hStateButton, HWND_TOP, (rc->right - rc->left) - 16, 0, 16, rc->bottom - rc->top, 0);
             hIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_RIGHT),IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR );
 			SendDlgItemMessage(hDlg, IDC_STATE, BM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM) (HANDLE) hIcon);
 		}
@@ -2025,7 +2025,7 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 					GetClientRect(hDlg, &clientrect);
 					hStateButton = GetDlgItem(hDlg, IDC_STATE);
-					SetWindowPos(hStateButton, HWND_TOP, (clientrect.right - clientrect.left) - 16, 0, 16, clientrect.bottom - clientrect.top, 0);
+					SetWindowPos((HWND)hStateButton, HWND_TOP, (clientrect.right - clientrect.left) - 16, 0, 16, clientrect.bottom - clientrect.top, 0);
 
 					hIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_LEFT),IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR );
 					SendDlgItemMessage(hDlg, IDC_STATE, BM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM) (HANDLE) hIcon);
@@ -2043,7 +2043,7 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 
 					GetClientRect(hDlg, &clientrect);
 					hStateButton = GetDlgItem(hDlg, IDC_STATE);
-					SetWindowPos(hStateButton, HWND_TOP, (clientrect.right - clientrect.left) - 16, 0, 16, clientrect.bottom - clientrect.top, 0);
+					SetWindowPos((HWND)hStateButton, HWND_TOP, (clientrect.right - clientrect.left) - 16, 0, 16, clientrect.bottom - clientrect.top, 0);
 		
 					ShowWindow(hAddCheat,SW_HIDE);
 				}
@@ -2134,7 +2134,7 @@ void SaveCheat(char * CheatName, BOOL Active) {
 	
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"Software\\N64 Emulation\\%s\\Cheats\\%s",AppName,Identifier);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,(LPSTR)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {		
 		RegSetValueEx(hKeyResults,"Name",0,REG_SZ,(CONST BYTE *)RomName,strlen(RomName));							
@@ -2163,7 +2163,7 @@ void SaveCheatExt(char * CheatName, char * CheatExt) {
 	
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"Software\\N64 Emulation\\%s\\Cheats\\%s",AppName,Identifier);
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0, (LPSTR)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {		
 		sprintf(String,"%s.exten",CheatName);

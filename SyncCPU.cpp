@@ -34,7 +34,7 @@
 
 void StartErrorLog ( void );
 void StopErrorLog  ( void );
-void WriteSyncMemoryLineDump ( char * Label, BYTE * Memory );
+void WriteSyncMemoryLineDump ( const char * Label, BYTE * Memory );
 
 DWORD CurrentBlock, *TLB_SyncReadMap, *TLB_SyncWriteMap, * MemAddrUsed[2] = { NULL,NULL };
 int SyncNextInstruction, SyncJumpToLocation;
@@ -104,7 +104,7 @@ void AllocateSyncMemory ( void ) {
 	memcpy(SyncTlb,tlb,sizeof(tlb));
 }
 
-void __cdecl Error_Message (char * Message, ...) {
+void __cdecl Error_Message (const char * Message, ...) {
 	DWORD dwWritten;
 	char Msg[400];
 	va_list ap;
@@ -271,7 +271,7 @@ void StartSyncCPU (void ) {
 			}
 			if (NextInstruction == DELAY_SLOT) {
 				__try {
-					Block = *(DelaySlotTable + (Addr >> 12));
+					Block = (BYTE*) *(DelaySlotTable + (Addr >> 12));
 				} __except(EXCEPTION_EXECUTE_HANDLER) {
 					DisplayError("Executing Delay Slot from non maped space");
 					ExitThread(0);
@@ -289,7 +289,7 @@ void StartSyncCPU (void ) {
 				continue;
 			}
 			__try {
-				Block = *(JumpTable + (Addr >> 2));
+				Block = (BYTE*) *(JumpTable + (Addr >> 2));
 			} __except(EXCEPTION_EXECUTE_HANDLER) {
 				DisplayError(GS(MSG_NONMAPPED_SPACE));
 				ExitThread(0);
@@ -580,10 +580,10 @@ int Sync_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	}
 	exRec = *lpEP->ExceptionRecord;
 
-    if ((int)((char *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) < 0) {
+    if ((int)((BYTE *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) < 0) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
-    if ((int)((char *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) > 0x1FFFFFFF) {
+    if ((int)((BYTE*)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) > 0x1FFFFFFF) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	
@@ -602,7 +602,7 @@ int Sync_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	return r4300i_CPU_MemoryFilter(dwExptCode,lpEP);
 }
 
-void WriteSyncMemoryLineDump (char * Label, BYTE * Memory) {
+void WriteSyncMemoryLineDump (const char * Label, BYTE * Memory) {
  	char Hex[100], Ascii[30];
 	DWORD count;
 

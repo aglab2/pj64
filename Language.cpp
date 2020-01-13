@@ -605,7 +605,7 @@ void CLanguage::SaveCurrentLang ( char * String ) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	DWORD Disposition = 0;
-	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, m_RegKey,0,"", REG_OPTION_NON_VOLATILE,
+	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, m_RegKey,0,(char*)"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"Language",0, REG_SZ,(CONST BYTE *)String,strlen(String));
@@ -685,7 +685,7 @@ char * GS (int StringID) {
 	for (count = 0; count < (sizeof(DefaultString) / sizeof(LANG_STR)); count ++) {
 		if (DefaultString[count].ID == StringID) { return DefaultString[count].Str; }
 	}
-	return "";
+	return (char*)"";
 }
 
 void CreateLangList (HMENU hMenu, int uPosition, int MenuID) {

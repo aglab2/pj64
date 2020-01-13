@@ -32,13 +32,12 @@
 int DMAUsed;
 
 void FirstDMA (void) {
-	switch (GetCicChipID(ROM)) {
+	switch (GetCicChipID((char*)ROM)) {
 	case 1: *(DWORD *)&N64MEM[0x318] = RdramSize; break;
 	case 2: *(DWORD *)&N64MEM[0x318] = RdramSize; break;
 	case 3: *(DWORD *)&N64MEM[0x318] = RdramSize; break;
 	case 5: *(DWORD *)&N64MEM[0x3F0] = RdramSize; break;
 	case 6: *(DWORD *)&N64MEM[0x318] = RdramSize; break;
-	default: DisplayError("Unhandled CicChip(%d) in first DMA",GetCicChipID(ROM));
 	}
 }
 

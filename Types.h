@@ -26,7 +26,7 @@
 #ifndef __Types_h 
 #define __Types_h 
 
-typedef unsigned _int64 QWORD;
+#include <minwindef.h>
 
 typedef union tagUWORD {
 	long				W;

@@ -116,10 +116,10 @@ void LoadPIF2 () {
 	char buff[255];
 	int cnt = 0;
 	
-	Pif2Reply[0] = malloc((MaxPif2Cmds + 1) * sizeof(__int64));
-	Pif2Reply[1] = malloc((MaxPif2Cmds + 1) * sizeof(__int64));
-	Pif2Reply[2] = malloc((MaxPif2Cmds + 1) * sizeof(__int64));
-	Pif2Reply[3] = malloc((MaxPif2Cmds + 1) * sizeof(__int64));
+	Pif2Reply[0] = (QWORD*)malloc((MaxPif2Cmds + 1) * sizeof(__int64));
+	Pif2Reply[1] = (QWORD*)malloc((MaxPif2Cmds + 1) * sizeof(__int64));
+	Pif2Reply[2] = (QWORD*)malloc((MaxPif2Cmds + 1) * sizeof(__int64));
+	Pif2Reply[3] = (QWORD*)malloc((MaxPif2Cmds + 1) * sizeof(__int64));
 
 	if (Pif2Reply[0] == NULL || Pif2Reply[1] == NULL ||
 		Pif2Reply[2] == NULL || Pif2Reply[3] == NULL) 
@@ -136,10 +136,10 @@ void LoadPIF2 () {
 	while (feof (pif2db) == 0) {
 		if (cnt == MaxPif2Cmds) {
 			MaxPif2Cmds += IncreaseMaxPif2;
-			Pif2Reply[0] = realloc(Pif2Reply[0],(MaxPif2Cmds + 1) * sizeof(__int64));
-			Pif2Reply[1] = realloc(Pif2Reply[1],(MaxPif2Cmds + 1) * sizeof(__int64));
-			Pif2Reply[2] = realloc(Pif2Reply[2],(MaxPif2Cmds + 1) * sizeof(__int64));
-			Pif2Reply[3] = realloc(Pif2Reply[3],(MaxPif2Cmds + 1) * sizeof(__int64));
+			Pif2Reply[0] = (QWORD*) realloc(Pif2Reply[0],(MaxPif2Cmds + 1) * sizeof(__int64));
+			Pif2Reply[1] = (QWORD*) realloc(Pif2Reply[1],(MaxPif2Cmds + 1) * sizeof(__int64));
+			Pif2Reply[2] = (QWORD*) realloc(Pif2Reply[2],(MaxPif2Cmds + 1) * sizeof(__int64));
+			Pif2Reply[3] = (QWORD*) realloc(Pif2Reply[3],(MaxPif2Cmds + 1) * sizeof(__int64));
 			if (Pif2Reply[0] == NULL || Pif2Reply[1] == NULL ||
 				Pif2Reply[2] == NULL || Pif2Reply[3] == NULL) 
 			{
